@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const isURL = require('validator/lib/isURL');
-const isAlphanumeric = require('validator/lib/isAlphanumeric');
+// const isAlphanumeric = require('validator/lib/isAlphanumeric');
 
 const moviesSchema = new mongoose.Schema({
   country: {
@@ -56,22 +56,22 @@ const moviesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
- nameRU: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (value) => isAlphanumeric(value,'ru-RU'),
-        message: 'Название должно быть на русском языке',
-      },
+  nameRU: {
+    type: String,
+    required: true,
+    // validate: {
+    //   validator: (value) => isAlphanumeric(value,'ru-RU'),
+    //   message: 'Название должно быть на русском языке',
+    // },
   },
- nameEN: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (value) => isAlphanumeric(value,'en-US'),
-        message: 'Название должно быть на английском языке',
-      },
-    },
+  nameEN: {
+    type: String,
+    required: true,
+    // validate: {
+    //   validator: (value) => isAlphanumeric(value,'en-US'),
+    //   message: 'Название должно быть на английском языке',
+    // },
+  },
 });
 
 module.exports = mongoose.model('movies', moviesSchema);

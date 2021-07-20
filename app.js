@@ -8,7 +8,7 @@ const cors = require('cors');
 // const path= require('path');
 const routesUsers = require('./routes/users');
 const routesMovies = require('./routes/movies');
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, out } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const err = require('./middlewares/err');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -35,13 +35,13 @@ const corsOptions = {
     'http://localhost:3000',
     'http://localhost:5000',
     'http://localhost',
-    'http://fofanaya.nomoredomains.club',
-    'http://api.fofanaya.nomoredomains.club',
+    'http://diplom.fofanaya.nomoredomains.club',
+    'http://api.diplom.fofanaya.nomoredomains.club',
     'https://localhost:3000',
     'https://localhost:5000',
     'https://localhost',
-    'https://fofanaya.nomoredomains.club',
-    'https://api.fofanaya.nomoredomains.club',
+    'https://diplom.fofanaya.nomoredomains.club',
+    'https://api.diplom.fofanaya.nomoredomains.club',
 
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -71,10 +71,10 @@ app.use('/signup', celebrate({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30).required(),
-    // about: Joi.string().min(2).max(30),
-    // avatar: Joi.string().pattern(/^https?:\/\/[\d\w.-]+\.[/\d\w.-]+/),
   }),
 }), createUser);
+
+app.use('/signout', out);
 
 app.use(auth);
 

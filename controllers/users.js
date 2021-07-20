@@ -15,31 +15,6 @@ const SALT_ROUNDS = parseInt(SLT_ROUNDS, 10);
 // # обновляет информацию о пользователе (email и имя)
 // PATCH /users/me
 
-// module.exports.getUsers = (req, res, next) => {
-//   User.find({})
-//     .then((users) => { res.send(users); })
-//     .catch((err) => { next(err); });
-// };
-
-// module.exports.getUser = (req, res, next) => {
-//   const { userId } = req.params;
-
-//   return User.findById(userId)
-//     .then((user) => {
-//       if (user) {
-//         return res.status(200).send(user);
-//       }
-//       throw new NotFoundError('Пользователь по указанному _id не найден.');
-//     })
-//     .catch((err) => {
-//       if (err.kind === 'ObjectId') {
-//         const error = new ValidationError('Переданы некорректные данные.');
-//         next(error);
-//       }
-//       next(err);
-//     });
-// };
-
 module.exports.getUserMe = (req, res, next) => {
   const userId = req.user._id;
 
@@ -76,27 +51,6 @@ module.exports.updUser = (req, res, next) => {
       next(err);
     });
 };
-
-// module.exports.updAvatar = (req, res, next) => {
-//   const userId = req.user._id;
-//   return User.findByIdAndUpdate(
-//     userId,
-//     { avatar: req.body.avatar },
-//     {
-//       new: true,
-//       runValidatirs: true,
-//     },
-//   )
-//     .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
-//     .then((user) => res.status(200).send(user))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         const error = new ValidationError('Переданы некорректные данные при обновлении аватара.');
-//         next(error);
-//       }
-//       next(err);
-//     });
-// };
 
 module.exports.createUser = (req, res, next) => {
   if (!req.body.email || !req.body.password) {
@@ -148,7 +102,6 @@ module.exports.login = (req, res, next) => {
             return Promise.reject(new UnauthorizedError('Неправильные почта или пароль.'));
           }
 
-          // const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
           const token = jwt.sign(
             { _id: user._id },
             NODE_ENV === 'production' ? JWT_SECRET : 'dev-some-secret-key',
@@ -164,4 +117,12 @@ module.exports.login = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+module.exports.out = (req, res, next) => { // eslint-disable-line no-unused-vars
+  const token = '';
+  return res
+    .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true })
+    .status(200)
+    .send({ message: 'Выход' }).end();
 };
