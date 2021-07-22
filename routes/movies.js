@@ -30,7 +30,7 @@ router.post('/', celebrate({
     image: Joi.string().required().pattern(/^https?:\/\/[\d\w.-]+\.[/\d\w.-]+/),
     trailer: Joi.string().required().pattern(/^https?:\/\/[\d\w.-]+\.[/\d\w.-]+/),
     thumbnail: Joi.string().required().pattern(/^https?:\/\/[\d\w.-]+\.[/\d\w.-]+/),
-    movieId: Joi.string().length(24).hex(),
+    movieId: Joi.string().min(2).required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),

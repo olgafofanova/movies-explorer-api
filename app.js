@@ -3,25 +3,20 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { errors, celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const cors = require('cors');
-// const path= require('path');
-const routesUsers = require('./routes/users');
-const routesMovies = require('./routes/movies');
-const { createUser, login, out } = require('./controllers/users');
-const auth = require('./middlewares/auth');
+const routes = require('./routes');
 const err = require('./middlewares/err');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const NotFoundError = require('./errors/not-found-err');
 
-const { PORT = 3000 } = process.env;
+const { NODE_ENV, BASE, PORT = 3000 } = process.env;
 const app = express();
 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(NODE_ENV === 'production' ? BASE : 'mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -59,32 +54,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.use('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30).required(),
-  }),
-}), createUser);
-
-app.use('/signout', out);
-
-app.use(auth);
-
-app.use('/users', auth, routesUsers);
-app.use('/movies', auth, routesMovies);
-
-app.all('/*', (req, res, next) => {
-  const error = new NotFoundError('Запрашиваемый ресурс не найден2.');
-  next(error);
-});
+app.use('/', routes);
 
 app.use(errorLogger); // подключаем логгер ошибок
 
