@@ -35,7 +35,7 @@ module.exports.updUser = (req, res, next) => {
 
   return User.findByIdAndUpdate(
     userId,
-    { name: req.body.name, about: req.body.about },
+    { name: req.body.name, email: req.body.email },
     {
       new: true,
       runValidatirs: true,

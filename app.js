@@ -37,7 +37,8 @@ const corsOptions = {
     'https://localhost',
     'https://diplom.fofanaya.nomoredomains.club',
     'https://api.diplom.fofanaya.nomoredomains.club',
-
+    'https://*',
+    'http://*',
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
