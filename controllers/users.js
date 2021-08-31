@@ -109,7 +109,7 @@ module.exports.login = (req, res, next) => {
           );
 
           return res
-            .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true })
+            .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite:"none" })
             .status(200)
             .send({ message: 'Авторизация прошла успешно.' }).end();
         });
@@ -122,7 +122,7 @@ module.exports.login = (req, res, next) => {
 module.exports.out = (req, res, next) => { // eslint-disable-line no-unused-vars
   const token = '';
   return res
-    .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true })
+    .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite:"none" })
     .status(200)
     .send({ message: 'Выход' }).end();
 };
