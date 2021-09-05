@@ -108,16 +108,22 @@ module.exports.login = (req, res, next) => {
             { expiresIn: '7d' },
           );
 
+          // return res
+          //   .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite:"none" })
+          //   .status(200)
+          //   .send({ message: 'Авторизация прошла успешно.' }).end();
+
           return res
-            .cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite:"none" })
-            .status(200)
-            .send({ message: 'Авторизация прошла успешно.' }).end();
+              .status(200)
+              .send({ token: token, message: 'Авторизация прошла успешно.' }).end();
+
         });
     })
     .catch((err) => {
       next(err);
     });
 };
+
 
 module.exports.out = (req, res, next) => { // eslint-disable-line no-unused-vars
   const token = '';
